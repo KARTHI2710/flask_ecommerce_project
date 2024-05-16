@@ -2,3 +2,6 @@ flask
 flask-login
 flask-sqlalchemy
 WTForms
+email-validator
+flask-bcrypt
+flask-wtf
