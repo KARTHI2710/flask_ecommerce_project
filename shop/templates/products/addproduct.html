@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% include '_messages.html' %}
+<div class="container">
+<div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+        <div class="text-center h1">Register</div>
+        {% include '_messages.html' %}
+                
+        {% from "_formhelpers.html" import render_field %}
+        <form method="post" enctype="multipart/form-data" >
+            <div>
+                {{ render_field(form.name,class="form-control",placeholder="Enter Name") }}
+                {{ render_field(form.price,class="form-control",placeholder="Enter Price") }}
+                {{ render_field(form.discount,class="form-control",placeholder="Enter Discount") }}
+                {{ render_field(form.stock,class="form-control",placeholder="Enter Stock") }}
+                {{ render_field(form.description,class="form-control",placeholder="Description") }}
+                {{ render_field(form.colors,class="form-control",placeholder="Enter Colors") }}
+                <label for="brand">Select Brand</label>
+                <select name="brand" id="brand" class="form-control">
+                    <option value="">Select a Brand</option>
+                    {% for brand in brands %}
+                    <option value="{{brand.id}}">{{brand.name}}</option>
+                    {% endfor %}
+                </select>
+                <label for="category">Select Category</label>
+                <select name="category" id="category" class="form-control"> 
+                    <option value="">Select a Category</option>
+                    {% for category in categories %}
+                    <option value="{{category.id}}">{{category.name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="row">
+                    <div class="col">
+                        {{ render_field(form.image_1,class="form-control") }}
+                    </div>
+                    <div class="col">
+                        {{ render_field(form.image_2,class="form-control") }}
+                    </div>
+                    <div class="col">
+                        {{ render_field(form.image_3,class="form-control") }}
+                    </div>
+                </div>
+    
+            </div>
+            <p><input type=submit value=Add class="btn btn-info mt-2"></p>
+        </form>
+    </div>
+    <div class="col"></div>
+</div>
+</div>
+
+ 
+{% endblock content %}
