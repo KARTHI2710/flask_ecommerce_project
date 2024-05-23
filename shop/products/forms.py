@@ -14,10 +14,10 @@ class AddProductForm(Form):
         FileAllowed(['jpg', 'jpeg', 'png', 'gif'],'Images only')
     ])
     image_2 = FileField('Image_2', validators=[
-        FileRequired(),
+        
         FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only')
     ])
     image_3 = FileField('Image_3', validators=[
-        FileRequired(),
+        
         FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Images only')
     ])
