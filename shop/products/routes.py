@@ -4,9 +4,9 @@ from .models import Brand,Category,Addproduct
 from .forms import AddProductForm 
 from werkzeug.utils import secure_filename
 import os
+import uuid
 
-UPLOAD_FOLDER = './upload'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = os.path.abspath('uploads')
 
 @app.route('/addbrand',methods=['GET','POST'])
 def addbrand():
@@ -47,27 +47,27 @@ def addproduct():
         stock=form.stock.data
         colors=form.colors.data
         desc = form.description.data
-        brand = request.form.get('brand')
-        category = request.form.get('category')
-        image_1 = form.image_1.data
+        image_1 = request.files['image_1']
         image_2 = form.image_2.data
         image_3 = form.image_3.data
+        brand = request.form.get('brand')
+        category = request.form.get('category')
 
         filename_1=""
         filename_2=""
         filename_3=""
         if image_1:
-            filename_1 = secure_filename(image_1.filename)
+            filename_1 = str(uuid.uuid1())+secure_filename(image_1.filename)
             image_1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename_1))
 
         if image_2:
-            filename_2 = secure_filename(image_2.filename)
+            filename_2 = str(uuid.uuid1())+secure_filename(image_2.filename)
             image_2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename_2))
 
         if image_3:
-            filename_3 = secure_filename(image_3.filename)
+            filename_3 = str(uuid.uuid1())+secure_filename(image_3.filename)
             image_3.save(os.path.join(app.config['UPLOAD_FOLDER'], filename_3))
-
+        
         addpro=Addproduct(
             name=name,
             price=price,
