@@ -2,10 +2,33 @@ from flask import render_template,redirect,url_for,request,session,flash
 from shop import app,db,bcrypt
 from .forms import RegistrationForm,LoginForm
 from .models import User
+from shop.products.models import Addproduct,Brand,Category
 
 @app.route('/')
 def home():
-    return render_template('admin/index.html',title="Home")
+    if 'email' not in session:
+        flash(f"Please Login first","danger")
+        return redirect(url_for('login'))
+    products = Addproduct.query.all()
+    return render_template('admin/index.html',title="Home",products=products)
+
+    
+
+@app.route('/showbrands')
+def showbrands():
+    if 'email' not in session:
+        flash(f"Please Login first","danger")
+        return redirect(url_for('login'))
+    brands = Brand.query.order_by(Brand.id.desc()).all()
+    return render_template('admin/brand.html',title="Brand",brands=brands)
+
+@app.route('/showcategories')
+def showcategories():
+    if 'email' not in session:
+        flash(f"Please Login first","danger")
+        return redirect(url_for('login'))
+    categories = Category.query.order_by(Category.id.desc()).all()
+    return render_template('admin/category.html',title="Category",categories=categories)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -32,7 +55,7 @@ def login():
         user=User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
             session['email']=form.email.data
-            flash(f'Hello {form.email.data}','success')
+            # flash(f'Hello {form.email.data}','success')
             return redirect(request.args.get('next') or url_for('home'))
         else:
             flash(f"Invalid password",'danger')
@@ -40,3 +63,10 @@ def login():
         
 
     return render_template('admin/login.html',form=form,title='Login Page')
+
+
+@app.route('/logout',methods=['GET','POST'])
+def logout():
+    # session.clear()
+    session.pop('email')
+    return redirect(url_for('login'))

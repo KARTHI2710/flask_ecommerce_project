@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% include '_messages.html' %}
+
+    <table class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Sr</th>
+                <th>Name</th>
+                <th>Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{category.name}}</td>
+                <td>
+                    <a href="#" class='btn btn-outline-info'>Edit</a>
+                    <a href="#" class='btn btn-outline-danger'>Delete</a>
+                </td>               
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}
