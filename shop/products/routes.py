@@ -88,7 +88,7 @@ def addproduct():
         return redirect(url_for('home'))
     return render_template('products/addproduct.html',form=form,title="Add Product",brands=brands,categories=categories)
 
-@app.route('/editproduct/<int:id>')
+@app.route('/editproduct/<int:id>',methods=['GET','POST'])
 def editproduct(id):
     if checkuser():
         form=AddProductForm(request.form)
@@ -97,6 +97,7 @@ def editproduct(id):
         product=Addproduct.query.get(id)
     
         if request.method == 'POST':
+           
             product.name=form.name.data
             product.price=form.price.data
             product.discount=form.discount.data
@@ -106,8 +107,9 @@ def editproduct(id):
             image_1 = request.files['image_1']
             image_2 = form.image_2.data
             image_3 = form.image_3.data
-            product.brand = request.form.get('brand')
-            product.category = request.form.get('category')
+            
+            product.brand_id = request.form.get('brand')
+            product.category_id = request.form.get('category')
     
             filename_1=""
             filename_2=""
@@ -132,4 +134,26 @@ def editproduct(id):
             return redirect(url_for('home'))
         return render_template('products/editproduct.html',form=form,title="Edit Product",product=product,brands=brands,categories=categories)
         
+@app.route('/deleteproduct/<int:id>',methods=['GET','POST'])
+def deleteproduct(id):
+    if checkuser():
+        product=Addproduct.query.get(id)
+        db.session.delete(product)
+        db.session.commit()
+        return redirect(url_for('home'))
+    
+
+
+    
+@app.route('/updatebrand/<int:id>',methods=['GET','POST'])
+def updatebrand(id):
+    if checkuser():
+        update_brand=Brand.query.get_or_404(id)
+        if request.method=='POST':
+            brand=request.form.get('brand')
+            update_brand.name=brand
+            flash('Your Brand has been updated','success')
+            db.session.commit()
+            return redirect(url_for('showbrands'))
+        return render_template('products/updatebrand.html',title='Update brand page',brand=update_brand)
     

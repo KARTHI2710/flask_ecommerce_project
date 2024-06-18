@@ -34,7 +34,7 @@
                 <td><img src="{{ url_for('static', filename='uploads/' + product.image_1) }}" alt="{{ product.name }}" width="80" height="80" /></td>
                 <td>
                     <a href="{{url_for('editproduct', id=product.id)}}" class="btn btn-outline-info">Edit</a>
-                    <a href="#" class="btn btn-outline-info">Delete</a>
+                    <a href="{{url_for('deleteproduct', id=product.id)}}" class="btn btn-outline-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}

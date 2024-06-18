@@ -1,0 +1,26 @@
+{% extends 'layout.html' %} 
+{% block content %}
+{% include '_messages.html' %}
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      {% if brand %}
+            <div class="text-center h5">Update Brand</div>
+            <form method="post">
+              <input type="text" name="brand" class="form-control" value={{brand.name}} />
+              <input type="submit" class="btn btn-info mt-2" />
+            </form>
+      {% else %}
+            <div class="text-center h5">Update Category</div>
+            <form method="post">
+              <input type="text" name="category" class="form-control" />
+              <input type="submit" class="btn btn-info mt-2" />
+            </form>
+      {% endif %}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+{% endblock content %}

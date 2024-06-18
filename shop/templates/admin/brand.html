@@ -18,8 +18,8 @@
                 <td>{{loop.index}}</td>
                 <td>{{brand.name}}</td>
                 <td>
-                    <a href="#" class='btn btn-outline-info'>Edit</a>
-                    <a href="#" class='btn btn-outline-danger'>Delete</a>
+                    <a href="{{url_for('updatebrand',id=brand.id)}}" class='btn btn-outline-info'>Edit</a>
+                    <a href="{{url_for('updatebrand',id=brand.id)}}" class='btn btn-outline-danger'>Delete</a>
                 </td>               
             {% endfor %}
         </tbody>

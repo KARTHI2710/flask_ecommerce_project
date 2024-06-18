@@ -3,6 +3,7 @@ from shop import app,db,bcrypt
 from .forms import RegistrationForm,LoginForm
 from .models import User
 from shop.products.models import Addproduct,Brand,Category
+from shop._global import checkuser
 
 @app.route('/')
 def home():
@@ -70,3 +71,6 @@ def logout():
     # session.clear()
     session.pop('email')
     return redirect(url_for('login'))
+
+
+
