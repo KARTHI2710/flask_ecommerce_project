@@ -14,7 +14,7 @@
       {% else %}
             <div class="text-center h5">Update Category</div>
             <form method="post">
-              <input type="text" name="category" class="form-control" />
+              <input type="text" name="category" class="form-control" value={{category.name}} />
               <input type="submit" class="btn btn-info mt-2" />
             </form>
       {% endif %}

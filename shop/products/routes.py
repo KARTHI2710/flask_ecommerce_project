@@ -32,7 +32,7 @@ def addcategory():
         db.session.add(cat)
         flash(f"{categoryname} added successfully","success")
         db.session.commit()
-        return redirect(url_for('addbrand'))
+        return redirect(url_for('addcategory'))
     return render_template('products/addbrand.html',title='Add Brand')
 
 @app.route('/addproduct',methods=['GET','POST'])
@@ -140,7 +140,7 @@ def deleteproduct(id):
         product=Addproduct.query.get(id)
         db.session.delete(product)
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('showcategories'))
     
 
 
@@ -156,4 +156,46 @@ def updatebrand(id):
             db.session.commit()
             return redirect(url_for('showbrands'))
         return render_template('products/updatebrand.html',title='Update brand page',brand=update_brand)
+
+
+@app.route('/deletebrand/<int:id>',methods=['GET','POST'])
+def deletebrand(id):
+    if checkuser():
+        brand=Brand.query.get_or_404(id)
+        db.session.delete(brand)
+        db.session.commit()
+        return redirect(url_for('showbrands'))
+    
+@app.route('/deletecategory/<int:id>',methods=['GET','POST'])
+def deletecategory(id):
+    if checkuser():
+        category=Category.query.get_or_404(id)
+        db.session.delete(category)
+        db.session.commit()
+        return redirect(url_for('showcategories'))
+    
+    
+@app.route('/updatecategory/<int:id>',methods=['GET','POST'])
+def updatecategory(id):
+    if checkuser():
+        update_category=Category.query.get_or_404(id)
+        if request.method=='POST':
+            category=request.form.get('category')
+            update_category.name=category
+            flash('Your Category has been updated','success')
+            db.session.commit()
+            return redirect(url_for('showcategories'))
+        return render_template('products/updatebrand.html',title='Update brand page',category=update_category)
+
+@app.route('/')
+def homeproduct():
+    products = Addproduct.query.all()
+    brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
+    return render_template('products/index.html',title="Home",products=products,brands=brands)
+
+@app.route('/brandproducts/<int:id>',methods=['GET','POST'])
+def brandproduct(id):
+    products = Addproduct.query.filter_by(brand_id=id)
+    brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
+    return render_template('products/index.html',title="Home",products=products,brands=brands)
     

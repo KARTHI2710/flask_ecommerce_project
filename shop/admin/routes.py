@@ -5,7 +5,7 @@ from .models import User
 from shop.products.models import Addproduct,Brand,Category
 from shop._global import checkuser
 
-@app.route('/')
+@app.route('/admin')
 def home():
     if 'email' not in session:
         flash(f"Please Login first","danger")
