@@ -27,6 +27,17 @@
               
             </ul>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for category in categories %}
+                    <li><a class="dropdown-item" href="{{url_for('categoryproduct',id=category.id )}}">{{category.name}}</a></li>
+                {% endfor %}
+              
+            </ul>
+          </li>
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -41,7 +52,7 @@
 <!-- products -->
 <div class="container mt-2">
     <div class="row">
-        {% for product in products %}
+        {% for product in products.items %}
             <div class="col-md-3 mt-3">
                 <div class="card">
                     <img src="{{url_for('static' , filename='uploads/'+ product.image_1)}}" class="card-img-top" height="200" alt="product image" loading="lazy">
@@ -61,6 +72,26 @@
             </div>
         {% endfor %}
         
+    </div>
+    <div class="row ">
+      <div class="col text-center">
+        {% if products.has_prev %}
+          <a href="{{url_for('homeproduct', page=products.prev_num)}}" class="btn btn-info btn-sm mt-3 a">previous</a>
+        {% endif %}
+
+        {% for page_num in products.iter_pages() %}
+            {% if products.page == page_num %}
+              <a href="{{url_for('homeproduct', page=page_num)}}" class="btn btn-info btn-sm mt-3 a">{{page_num}}</a>
+            {% else %}
+              <a href="{{url_for('homeproduct', page=page_num)}}" class="btn btn-outline-info btn-sm mt-3">{{page_num}}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+        <a href="{{url_for('homeproduct', page=products.next_num)}}" class="btn btn-info btn-sm mt-3 a">next</a>
+        {% endif %}
+
+      </div>
     </div>
 </div>
 <!-- products end -->
