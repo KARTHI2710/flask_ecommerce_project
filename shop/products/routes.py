@@ -190,28 +190,36 @@ def updatecategory(id):
 @app.route('/')
 def homeproduct():
     page=request.args.get('page',1,type=int)
-    products = Addproduct.query.paginate(page=page,per_page=2)
+    products = Addproduct.query.paginate(page=page,per_page=1)
     #print(products)
     # print(products.items)
     # print(products.iter_pages())
 
     brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
     categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
-    return render_template('products/index.html',title="Home",products=products,brands=brands,categories=categories_name)
+    return render_template('products/index.html',title="Home",products=products,brands=brands,categories=categories_name,product_paginate=True)
 
 @app.route('/brandproducts/<int:id>',methods=['GET','POST'])
 def brandproduct(id):
     page=request.args.get('page',1,type=int)
-    products = Addproduct.query.filter_by(brand_id=id).paginate(page=page,per_page=2)
+    brand_id=Brand.query.filter_by(id=id).first()
+    products = Addproduct.query.filter_by(brand_id=id).paginate(page=page,per_page=1)
     brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
     categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
-    return render_template('products/index.html',title="Home",products=products,brands=brands,categories=categories_name)
+    return render_template('products/index.html',title="Home",products=products,brands=brands,categories=categories_name,brand_id=brand_id)
 
 @app.route('/categoryproducts/<int:id>',methods=['GET','POST'])
 def categoryproduct(id):
     page=request.args.get('page',1,type=int)
-    products = Addproduct.query.filter_by(category_id=id).paginate(page=page,per_page=2)
+    products = Addproduct.query.filter_by(category_id=id).paginate(page=page,per_page=1)
     brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
     categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
-    return render_template('products/index.html',title="Home",products=products,categories=categories_name,brands=brands)
+    return render_template('products/index.html',title="Home",products=products,categories=categories_name,brands=brands,category_id=id)
+
+@app.route('/singleproduct/<int:id>',methods=['GET','POST'])
+def singleproduct(id):
+    product = Addproduct.query.filter_by(id=id).first()
+    brands=Brand.query.join(Addproduct,(Brand.id==Addproduct.brand_id)).all()
+    categories=Brand.query.join(Addproduct,(Brand.id==Addproduct.brand_id)).all()
+    return render_template('products/singleproduct.html',title="Single Product",product=product,brands=brands,categories=categories)
     

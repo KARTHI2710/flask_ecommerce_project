@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include '_navbar.html' %}
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-4" id="b_image">
+            <img src="{{url_for('static',filename='uploads/' + product.image_1)}}" alt="{{product.name}}" height="400" widht="400">
+        </div>
+        <div class="col-md-6">
+            <h4>Product Name : {{product.name}}</h4>
+            <hr>
+            <p>Product Price : Rs. {{product.price}}</p>
+            {% if product.discount > 0 %}
+                <p>Product Discount : {{product.discount}} %</p>
+            {% endif %}
+            <b>Product Discription : {{product.desc}}</b>
+            <br>
+            <a href="#" class="btn btn-warning mt-3">Add to Cart</a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mt-3" id="s_image">
+            {% if product.image_1 %}
+            <img src="{{url_for('static',filename='uploads/' + product.image_1)}}" alt="{{product.name}}" height="120" widht="120">
+            {% endif %}
+            {% if product.image_2 %}
+            <img src="{{url_for('static',filename='uploads/' + product.image_2)}}" alt="{{product.name}}" height="120" widht="120">
+            {% endif %}
+            {% if product.image_3 %}
+            <img src="{{url_for('static',filename='uploads/' + product.image_3)}}" alt="{{product.name}}" height="120" widht="120">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var b_image=document.getElementById('b_image');
+    var s_image=document.getElementById('s_image').getElementsByTagName('img');
+
+    for(var i=0;i<s_image.length;i++){
+        s_image[i].addEventListener('click',full_image);
+    }
+
+    function full_image(){
+        var imagesrc=this.getAttribute('src');
+        b_image.innerHTML="<img src="+ imagesrc +" width='400' height='400'>"
+    }
+</script>
+{% endblock content%}
