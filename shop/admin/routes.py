@@ -13,7 +13,6 @@ def home():
     products = Addproduct.query.all()
     return render_template('admin/index.html',title="Home",products=products)
 
-    
 
 @app.route('/showbrands')
 def showbrands():

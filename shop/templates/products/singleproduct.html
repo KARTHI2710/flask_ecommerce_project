@@ -14,9 +14,26 @@
             {% if product.discount > 0 %}
                 <p>Product Discount : {{product.discount}} %</p>
             {% endif %}
+            <hr>
             <b>Product Discription : {{product.desc}}</b>
             <br>
-            <a href="#" class="btn btn-warning mt-3">Add to Cart</a>
+            
+            <form action="{{url_for('AddCart')}}" method="post">
+                <input type="hidden" value="{{product.id}}" name="product_id">
+                <button type="submit" class="btn btn-warning btn-sm">Add to Cart</button>
+                <label for="quantity">quantity</label>
+                <input type="number" name="quantity" min="1" max="{{product.stock}}" value="1">
+                {% set colors = product.colors.split(',') %}
+
+                <label for="colors">Colors: </label>
+                <select name="colors" id="colors">
+                    {% for color in colors %}
+                        <option value="{{ color }}">{{ color|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+       
         </div>
         <div class="col-md-2"></div>
     </div>
