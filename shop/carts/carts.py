@@ -24,7 +24,7 @@ def AddCart():
             DictItems = {
                 product_id : {
                     'name':product.name, 'price':product.price, 'discount':product.discount, 'colors':colors,
-                    'quanity':quantity,'image':product.image_1
+                    'quantity':quantity,'image':product.image_1,'product_colors':product.colors
                 }
             }
 
@@ -48,5 +48,19 @@ def AddCart():
 def displaycart():
     if 'Shoppingcart' not in session:
         return redirect(request.referrer)
-    return render_template('carts/carts.html')
+    subtotal=0
+    grandtotal=0
+    for key,product in session['Shoppingcart'].items():
+        print(session['Shoppingcart'])
+        discount=(product['discount']/100)*float(product['price'])
+        subtotal+=float(product['price'])-discount
+        grandtotal+=float(product['price']) 
+    return render_template('carts/carts.html',subtotal=subtotal,grandtotal=grandtotal)
                                  
+@app.route('/clearcart',methods=['GET','POST'])
+def clearcart():
+    try:
+        session.pop('Shoppingcart')
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e)                                 

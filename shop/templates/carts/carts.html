@@ -9,8 +9,10 @@
             <thead>
                 <tr>
                 <th>Sr</th>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Color</th>
+                <th>Quantity</th>
                 <th>Price</th>
                 <th>Discount</th>
                 <th>Subtotal</th>
@@ -24,8 +26,21 @@
                 {% set subtotal = product.price|int - discount_price|int %}
                 <tr>
                     <td>{{loop.index}}</td>
+                    
+                    <td><img src="{{ url_for('static', filename='uploads/'+product.image) }}" width="50" height="50"></td>
                     <td>{{product.name}}</td>
-                    <td>{{product.colors}}</td>
+                     <!-- <td>{{product.colors}}</td>  -->
+                    <td>
+                        {% set colors = product.product_colors.split(',') %}
+                        <select name="colors" id="colors">
+                            {% for color in colors %}
+                                <option value="{{ color }}" {% if color == product.colors %}selected{% endif %}>{{ color|capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" value="{{product.quantity}}" id="quan" name="quan">
+                    </td>
                     <td>{{product.price}}</td>
                     <td>{{product.discount}}% is {{discount_price}}</td>
                     <td>{{subtotal}}</td>
@@ -33,9 +48,12 @@
                     <td><a href="#">Delete</a></td>
                 </tr>
                 {% endfor %}
-    
             </tbody>
         </table>
+        <div class="d-flex">
+            <h4>Total : {{grandtotal}}</h4>&nbsp;&nbsp;&nbsp;
+            <h4>SubTotal : {{subtotal}}</h4>
+        </div>
     </div>
 </div>
 
