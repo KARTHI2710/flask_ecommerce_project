@@ -46,6 +46,8 @@ def AddCart():
 
 @app.route('/cartitems',methods=['GET','POST'])
 def displaycart():
+    brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
+    categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
     if 'Shoppingcart' not in session:
         return redirect(request.referrer)
     subtotal=0
@@ -53,9 +55,9 @@ def displaycart():
     for key,product in session['Shoppingcart'].items():
         print(session['Shoppingcart'])
         discount=(product['discount']/100)*float(product['price'])
-        subtotal+=float(product['price'])-discount
+        subtotal+=int(product['quantity'])*(float(product['price'])-discount)
         grandtotal+=float(product['price']) 
-    return render_template('carts/carts.html',subtotal=subtotal,grandtotal=grandtotal)
+    return render_template('carts/carts.html',subtotal=subtotal,grandtotal=grandtotal,brands=brands,categories=categories_name)
                                  
 @app.route('/clearcart',methods=['GET','POST'])
 def clearcart():
@@ -63,4 +65,40 @@ def clearcart():
         session.pop('Shoppingcart')
         return redirect(url_for('home'))
     except Exception as e:
-        print(e)                                 
+        print(e)
+
+
+@app.route('/updatecart/<product_id>', methods=['POST'])
+def updatecart(product_id):
+    print(product_id)
+    if 'Shoppingcart' not in session:
+        return redirect(url_for('homeproduct'))
+    if request.method=='POST':
+        quantity=request.form.get('quan')
+        color=request.form.get('color')
+        try:
+            for key,item in session['Shoppingcart'].items():
+                if key==product_id:
+                    item['colors'] = color
+                    item['quantity']=quantity
+                    flash('Your Item has been updated','success')
+                    return redirect(url_for('displaycart'))  
+            
+        except Exception as e:
+            print(e)
+            return redirect(url_for('displaycart'))  
+
+@app.route('/deletecart/<product_id>', methods=['GET'])
+def deletecart(product_id):
+    print(product_id)
+    if 'Shoppingcart' not in session:
+        return redirect(url_for('homeproduct'))
+    try:
+        for key,item in session['Shoppingcart'].items():
+            if key==product_id:
+                session['Shoppingcart'].pop(key)
+                flash('Your Item has been deleted','success')
+                return redirect(url_for('displaycart'))  
+    except Exception as e:
+            print(e)
+            return redirect(url_for('displaycart'))                                                                

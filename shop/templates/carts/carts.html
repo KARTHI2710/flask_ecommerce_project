@@ -23,29 +23,33 @@
             <tbody>
                 {% for key,product in session['Shoppingcart'].items() %}
                 {% set discount_price =  product.discount|int *  product.price|int // 100 %}
-                {% set subtotal = product.price|int - discount_price|int %}
+                {% set subtotal = product.quantity|int * (product.price|int - discount_price|int) %}
                 <tr>
                     <td>{{loop.index}}</td>
                     
                     <td><img src="{{ url_for('static', filename='uploads/'+product.image) }}" width="50" height="50"></td>
                     <td>{{product.name}}</td>
                      <!-- <td>{{product.colors}}</td>  -->
-                    <td>
-                        {% set colors = product.product_colors.split(',') %}
-                        <select name="colors" id="colors">
-                            {% for color in colors %}
-                                <option value="{{ color }}" {% if color == product.colors %}selected{% endif %}>{{ color|capitalize }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" value="{{product.quantity}}" id="quan" name="quan">
-                    </td>
-                    <td>{{product.price}}</td>
-                    <td>{{product.discount}}% is {{discount_price}}</td>
-                    <td>{{subtotal}}</td>
-                    <td><a href="#">Update</a></td>
-                    <td><a href="#">Delete</a></td>
+                    <form action="{{url_for('updatecart',product_id=key)}}" method="post">
+                        <td>
+                            {% set colors = product.product_colors.split(',') %}
+                            <select name="color" id="color">
+                                {% for color in colors %}
+                                    <option value="{{ color }}" {% if color == product.colors %}selected{% endif %}>{{ color|capitalize }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" value="{{product.quantity}}" id="quan" name="quan">
+                        </td>
+                        
+                        <td>{{product.price}}</td>
+                        <td>{{product.discount}}% is {{discount_price}}</td>
+                        <td>{{subtotal}}</td>
+                        <!-- <td><a href="{{url_for('updatecart',product_id=key)}}">Update</a></td> -->
+                        <td><button type="submit" class="btn btn-sm btn-primary">Update</button></td>
+                    </form>
+                    <td><a href="{{url_for('deletecart',product_id=key)}}" class="btn btn-sm btn-danger">Delete</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
