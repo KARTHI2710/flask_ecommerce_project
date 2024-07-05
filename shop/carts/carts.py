@@ -29,9 +29,16 @@ def AddCart():
             }
 
             if 'Shoppingcart' in session:
-                print(session['Shoppingcart'])
+                
                 if product_id in session['Shoppingcart']:
-                    print("This product is already in your cart")
+                    print(product_id)
+                    for key,item in session['Shoppingcart'].items():
+                        if int(key)==int(product_id):
+                            print('enterd')
+                            session.modified=True
+                            item['quantity']=int(item['quantity'])+1
+                            print(item['quantity'])
+                            print(session['Shoppingcart'])
                 else:
                     session['Shoppingcart']=MergeDicts(session['Shoppingcart'],DictItems)
                     return redirect(request.referrer)
@@ -62,8 +69,8 @@ def displaycart():
 @app.route('/clearcart',methods=['GET','POST'])
 def clearcart():
     try:
-        session.pop('Shoppingcart')
-        return redirect(url_for('home'))
+        session.pop('Shoppingcart',None)
+        return redirect(url_for('homeproduct'))
     except Exception as e:
         print(e)
 
