@@ -1,5 +1,5 @@
 from flask import render_template,redirect,url_for,flash,request
-from shop import app,db
+from shop import app,db,search
 from .models import Brand,Category,Addproduct
 from .forms import AddProductForm 
 from werkzeug.utils import secure_filename
@@ -198,6 +198,17 @@ def homeproduct():
     brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
     categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
     return render_template('products/index.html',title="Home",products=products,brands=brands,categories=categories_name,product_paginate=True)
+
+
+@app.route('/result')
+def result():
+    searchword=request.args.get('q')
+    products=Addproduct.query.mserch(searchword,fields=['name','desc'],limit=3)
+
+    brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
+    categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
+    return render_template('products/result.html',products=products,brands=brands,categories=categories_name)
+
 
 @app.route('/brandproducts/<int:id>',methods=['GET','POST'])
 def brandproduct(id):

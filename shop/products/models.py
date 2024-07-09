@@ -2,6 +2,10 @@ from shop import db,app
 from datetime import datetime
 
 class Addproduct(db.Model):
+    #flask-search fields
+    __searchable__=['name','desc']
+
+    #fields
     id=db.Column(db.Integer,primary_key=True)
     name=db.Column(db.String(50),nullable=False)
     price=db.Column(db.Numeric(10,2),nullable=False)
