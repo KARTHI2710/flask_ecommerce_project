@@ -13,6 +13,7 @@
     </div>
 
     <form action="" method="post">
+        {{form.csrf_token}}
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
@@ -25,7 +26,6 @@
             </div>
             <div class="col-md-4">
                 {{render_field(form.country,class="form-control")}}
-                {{render_field(form.state,class="form-control")}}
                 {{render_field(form.city,class="form-control")}}
                 {{render_field(form.contact,class="form-control")}}
                 {{render_field(form.address,class="form-control")}}

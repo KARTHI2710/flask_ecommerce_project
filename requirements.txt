@@ -6,3 +6,4 @@ email-validator
 flask-bcrypt
 flask-wtf
 Werkzeug
+flask-msearch

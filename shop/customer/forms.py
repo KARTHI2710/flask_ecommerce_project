@@ -1,7 +1,10 @@
-from wtforms import Form,StringField,TextAreaField,PasswordField,SubmitField,validators
+from wtforms import Form,StringField,TextAreaField,PasswordField,SubmitField,validators,ValidationError
 from flask_wtf.file import FileRequired,FileAllowed,FileField
 
-class CustomerRegisterForm(Form):
+from flask_wtf import FlaskForm
+from .models import Register
+
+class CustomerRegisterForm(FlaskForm):
     name = StringField('Name : ')
     username = StringField('UserName : ',[validators.DataRequired()])
     email = StringField('Email : ',[validators.Email(),validators.DataRequired()])
@@ -17,3 +20,12 @@ class CustomerRegisterForm(Form):
     profile = FileField('Profile ',validators=[FileAllowed(['jpg','png','jpeg','gif'], 'Image only Please')])
 
     submit = SubmitField('Register')
+
+    def validate_username(self,username):
+        if Register.query.filter_by(username=username.data).first():
+            raise ValidationError("This username is already in use")
+
+
+    def validate_email(self,email):
+        if Register.query.filter_by(email=email.data).first():
+            raise ValidationError("This email is already in use")

@@ -203,7 +203,7 @@ def homeproduct():
 @app.route('/result')
 def result():
     searchword=request.args.get('q')
-    products=Addproduct.query.mserch(searchword,fields=['name','desc'],limit=3)
+    products=Addproduct.query.msearch(searchword,fields=['name','desc'],limit=3)
 
     brands = Brand.query.join(Addproduct,(Brand.id == Addproduct.brand_id)).all()
     categories_name = Category.query.join(Addproduct,(Category.id == Addproduct.category_id)).all()
