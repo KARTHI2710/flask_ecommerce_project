@@ -42,3 +42,6 @@ def customerLogin():
         return redirect(url_for('customerLogin'))
     
     return render_template('customer/login.html',form=form)
+
+
+@app.route('/getorder')
