@@ -11,7 +11,7 @@ class CustomerRegisterForm(FlaskForm):
     password = PasswordField('Password : ',[validators.DataRequired(),validators.EqualTo('confirm',message='Both password must match! ')])
     confirm = PasswordField('Repeat password : ',[validators.DataRequired()])
     country = StringField('Country : ',[validators.DataRequired()])
-    state = StringField('State : ',[validators.DataRequired()])
+    state = StringField('State : ')
     city = StringField('City : ',[validators.DataRequired()])
     contact = StringField('Contact : ',[validators.DataRequired()])
     address = StringField('Address : ',[validators.DataRequired()])
@@ -29,3 +29,8 @@ class CustomerRegisterForm(FlaskForm):
     def validate_email(self,email):
         if Register.query.filter_by(email=email.data).first():
             raise ValidationError("This email is already in use")
+        
+
+class CustomerLoginForm(FlaskForm):
+    email = StringField('Email : ',[validators.Email(),validators.DataRequired()])
+    password = PasswordField('Password : ',[validators.DataRequired()])
