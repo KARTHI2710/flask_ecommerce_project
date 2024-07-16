@@ -47,3 +47,4 @@ def customerLogin():
 def customer_logout():
     logout_user()
     return redirect(url_for('customerLogin'))
+
