@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% include "_navbar.html" %}
+<div class="container">
+    <div class="row">
+        <br>
+        Invoice : {{orders.invoice}}
+        <br>
+        Status : {{orders.status}}
+        <br>
+        Customer Name : {{customer.name}}
+        <br>
+        Email : {{customer.email}}
+        <br>
+        Contact : {{customer.contact}}
+        <br>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                <th>Sr</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Subtotal</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {% for key,product in orders.orders.items() %}
+                {% set discount_price =  product.discount|int *  product.price|int // 100 %}
+                {% set subtotal = product.quantity|int * (product.price|int - discount_price|int) %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    
+                    <td><img src="{{ url_for('static', filename='uploads/'+product.image) }}" width="50" height="50"></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.colors}}</td>
+                    <form action="{{url_for('updatecart',product_id=key)}}" method="post">
+                        <td>{{product.quantity}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.discount}}% is {{discount_price}}</td>
+                        <td>{{subtotal}}</td>
+                    </form>
+                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex">
+            <a href="{{url_for('get_order')}}" class="btn btn-sm btn-success">Order Now</a>
+            <h4>Total : {{grandtotal}}</h4>&nbsp;&nbsp;&nbsp;
+            <h4>SubTotal : {{subtotal}}</h4>
+            <a href="{{url_for('clearcart')}}" class="btn btn-sm btn-danger">Clear cart</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
