@@ -6,6 +6,7 @@ from flask_msearch import Search
 from flask_login import LoginManager
 
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myshop.db'
 app.config['SECRET_KEY']='karthi'
